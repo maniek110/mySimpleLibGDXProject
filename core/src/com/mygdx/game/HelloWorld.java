@@ -16,7 +16,7 @@ public class HelloWorld implements ApplicationListener {
     private Texture textura;
     private Texture[] texture;
     private Animation<Texture> animation;
-    float time=0f;
+    float time;
 
     @Override
     public void create() {
@@ -25,8 +25,9 @@ public class HelloWorld implements ApplicationListener {
         for(int i=0;i<x;i++){
             texture[i]=new Texture("Resources\\Jungle Asset Pack\\Character\\sprites\\run\\run_"+i+".png");
         }
+        time=0;
         sprite=new Sprite(texture[4]);
-        animation=new Animation<Texture>(0.025f,texture);
+        animation=new Animation<Texture>(0.125f,texture);
         spriteBatch=new SpriteBatch();
     }
 
@@ -37,10 +38,12 @@ public class HelloWorld implements ApplicationListener {
 
     @Override
     public void render() {
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(10);
         time+=Gdx.graphics.getDeltaTime();
-        textura=animation.getKeyFrame(time,true);
         spriteBatch.begin();
+        spriteBatch.draw(animation.getKeyFrame(time,true),100,100);
+        Gdx.gl.glClear(10);
         spriteBatch.end();
     }
 
