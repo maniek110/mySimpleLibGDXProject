@@ -2,22 +2,31 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import java.io.File;
 
 public class HelloWorld implements ApplicationListener {
 
     private SpriteBatch spriteBatch;
     private Sprite sprite;
-    private Texture texture;
+    private Texture textura;
+    private Texture[] texture;
+    private Animation<Texture> animation;
+    float time=0f;
 
     @Override
     public void create() {
-        texture=new Texture("Resources/XD.png");
-        sprite=new Sprite(texture);
+        int x=new File("Resources\\Jungle Asset Pack\\Character\\sprites\\run\\").listFiles().length;
+        texture=new Texture[x];
+        for(int i=0;i<x;i++){
+            texture[i]=new Texture("Resources\\Jungle Asset Pack\\Character\\sprites\\run\\run_"+i+".png");
+        }
+        sprite=new Sprite(texture[4]);
+        animation=new Animation<Texture>(0.025f,texture);
         spriteBatch=new SpriteBatch();
     }
 
@@ -29,8 +38,9 @@ public class HelloWorld implements ApplicationListener {
     @Override
     public void render() {
         Gdx.gl.glClear(10);
+        time+=Gdx.graphics.getDeltaTime();
+        textura=animation.getKeyFrame(time,true);
         spriteBatch.begin();
-        sprite.draw(spriteBatch);
         spriteBatch.end();
     }
 
