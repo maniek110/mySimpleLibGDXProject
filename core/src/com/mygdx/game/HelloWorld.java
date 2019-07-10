@@ -1,33 +1,29 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 
-import java.io.File;
-
-public class HelloWorld implements ApplicationListener {
+public class HelloWorld extends ApplicationAdapter {
 
     private SpriteBatch spriteBatch;
     private Sprite sprite;
-    private Texture textura;
-    private Texture[] texture;
-    private Animation<Texture> animation;
-    float time;
+    private TextureAtlas textureAtlas;
+    private Array<TextureAtlas.AtlasRegion> frames;
+    private Animation animation;
+
 
     @Override
     public void create() {
-        int x=new File("Resources\\Jungle Asset Pack\\Character\\sprites\\run\\").listFiles().length;
-        texture=new Texture[x];
-        for(int i=0;i<x;i++){
-            texture[i]=new Texture("Resources\\Jungle Asset Pack\\Character\\sprites\\run\\run_"+i+".png");
-        }
-        time=0;
-        sprite=new Sprite(texture[4]);
-        animation=new Animation<Texture>(0.125f,texture);
+        System.out.println(Gdx.files.getLocalStoragePath());
+        //textureAtlas=new TextureAtlas(Gdx.files.internal("Resources\\Jungle Asset Pack\\Character\\sprites\\run\\run.atlas"));
+        //TextureAtlas.AtlasRegion region=textureAtlas.findRegion("0");
+        //frames=textureAtlas.findRegions("run");
         spriteBatch=new SpriteBatch();
     }
 
@@ -38,12 +34,13 @@ public class HelloWorld implements ApplicationListener {
 
     @Override
     public void render() {
+        Texture texture=new Texture(Gdx.files.internal("Resources\\run\\0002.png"));
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(10);
-        time+=Gdx.graphics.getDeltaTime();
         spriteBatch.begin();
-        spriteBatch.draw(animation.getKeyFrame(time,true),100,100);
-        Gdx.gl.glClear(10);
+        sprite=new Sprite(texture);
+        sprite.draw(spriteBatch);
+        //animation=new Animation(8,frames, Animation.PlayMode.LOOP);
         spriteBatch.end();
     }
 
@@ -59,6 +56,7 @@ public class HelloWorld implements ApplicationListener {
 
     @Override
     public void dispose() {
-
+        spriteBatch.dispose();
+        textureAtlas.dispose();
     }
 }
